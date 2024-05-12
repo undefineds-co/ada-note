@@ -2,10 +2,13 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-  redirects: {
-    source: '/',
-    destination: '/journal',
-  },
+  redirects: () => [
+    {
+      source: '/',
+      destination: '/journal',
+      permanent: false,
+    },
+  ],
 }
 
 export default nextConfig

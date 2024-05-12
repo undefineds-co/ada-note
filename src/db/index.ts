@@ -1,15 +1,14 @@
 import { Kysely, PostgresDialect } from 'kysely'
 import { Pool, types as pgTypes } from 'pg'
 import { Database } from '~/types'
-import { WithUserPlugin } from './with-user-plugin'
 
 const dialect = new PostgresDialect({
   pool: new Pool({
-    host: '101.36.125.228',
-    port: 9432,
-    database: 'claynote',
-    user: 'postgres',
-    password: '!KxEKpczy6ohPf',
+    host: process.env.DB_HOST ?? 'localhost',
+    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 9432,
+    database: process.env.DB_NAME ?? 'claynote',
+    user: process.env.DB_USER ?? 'postgres',
+    password: process.env.DB_PASSWORD,
   }),
 })
 
