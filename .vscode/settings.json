@@ -1,0 +1,15 @@
+{
+  "cSpell.words": ["claynote", "daisyui", "Insertable", "kysely", "signin", "Updateable"],
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "101.36.125.228",
+      "port": 9432,
+      "driver": "PostgreSQL",
+      "name": "claynote",
+      "database": "claynote",
+      "username": "postgres",
+      "password": "!KxEKpczy6ohPf"
+    }
+  ]
+}
