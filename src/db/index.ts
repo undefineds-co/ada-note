@@ -4,11 +4,7 @@ import { Database } from '~/types'
 
 const dialect = new PostgresDialect({
   pool: new Pool({
-    host: process.env.DB_HOST ?? 'localhost',
-    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 9432,
-    database: process.env.DB_NAME ?? 'claynote',
-    user: process.env.DB_USER ?? 'postgres',
-    password: process.env.DB_PASSWORD,
+    connectionString: process.env.DATABASE_URL,
   }),
 })
 
