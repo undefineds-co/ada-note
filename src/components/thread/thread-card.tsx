@@ -1,7 +1,5 @@
 'use client'
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import { Check, CheckCircle } from 'lucide-react'
 import { MouseEvent, startTransition, useState } from 'react'
 import {
   DropdownMenu,
@@ -12,17 +10,14 @@ import {
 } from '~/components/ui/dropdown-menu'
 import { cn } from '~/lib/utils'
 import { ThreadColor, ThreadData, ThreadExtend } from '~/types'
-import { ThreadUpdateForm } from './thread-update-form'
 import { updateThread } from '../../actions'
-import { Check, CheckCircle } from 'lucide-react'
 import { Button } from '../ui/button'
 import { ThreadCardSheet } from './thread-card-sheet'
 import { ThreadContentSheet } from './thread-content-sheet'
-import { parseThreadContent } from './util'
 import { ThreadTopicSelect } from './thread-topic-select'
-
-dayjs.extend(duration)
-dayjs.extend(relativeTime)
+import { ThreadUpdateForm } from './thread-update-form'
+import { parseThreadContent } from './util'
+import { ThreadTime } from './thread-time'
 
 export const ThreadCard = ({
   thread,
@@ -33,16 +28,10 @@ export const ThreadCard = ({
 }) => {
   const showExtra = onEditSuccess === undefined && !thread.lead_thread_id
   const editable = onEditSuccess !== undefined
-  const showTime = onEditSuccess !== undefined
+  const showDuration = onEditSuccess !== undefined
   const [isEditing, setEditing] = useState(false)
 
   const { thread_title, thread_content } = parseThreadContent(thread.thread_content)
-
-  const created_at = dayjs(thread.created_at)
-  let time = created_at.format('YYYY-MM-DD')
-  if (showTime) {
-    time = dayjs.duration(created_at.diff(dayjs())).humanize(true)
-  }
 
   const handleEdit = () => {
     if (!editable) return
@@ -86,7 +75,9 @@ export const ThreadCard = ({
         onColorChange={handleColorChange}
         onTodoChange={handleTodoChange}
       />
-      {!isEditing && <time>{time}</time>}
+      {!isEditing && (
+        <ThreadTime date={thread.created_at} format={showDuration ? 'duration' : 'date'} />
+      )}
       <div className="timeline-content">
         {isEditing ? (
           <ThreadUpdateForm thread={thread} onSuccess={handleSuccess} />

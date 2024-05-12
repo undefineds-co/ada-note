@@ -18,6 +18,7 @@ import {
   TopicUpdate,
 } from '~/types'
 import { mustAuth } from './auth'
+import { signIn } from '../auth'
 
 const threadColors: ThreadColor[] = ['Highlight', 'Todo', 'Idea']
 const threadColorEnum = z.enum<ThreadColor, [ThreadColor, ...ThreadColor[]]>([
@@ -357,4 +358,14 @@ export const getPinTopics = async (): Promise<TopicData[]> => {
     .orderBy('updated_at', 'desc')
     .execute()
   return topics
+}
+
+export const login = async (formData: FormData) => {
+  const { email, password } = zfd
+    .formData({
+      email: zfd.text(z.string().email()),
+      password: zfd.text(),
+    })
+    .parse(formData)
+  return signIn('credentials', { email, password, redirectTo: '/journal' })
 }

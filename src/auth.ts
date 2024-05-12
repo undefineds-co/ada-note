@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import NextAuth, { User } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { ZodError, object, string } from 'zod'
@@ -13,6 +13,7 @@ export const {
   handlers: { GET, POST },
 } = NextAuth({
   ...authConfig,
+  session: { strategy: 'jwt' },
   providers: [
     Credentials({
       credentials: {
@@ -40,7 +41,6 @@ export const {
           return authUser
         } catch (error) {
           if (error instanceof ZodError) {
-            // Return `null` to indicate that the credentials are invalid
             return null
           }
           throw error
