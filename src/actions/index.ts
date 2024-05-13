@@ -19,6 +19,7 @@ import {
 } from '~/types'
 import { mustAuth } from './auth'
 import { signIn } from '../auth'
+import { processThread } from './util'
 
 const threadColors: ThreadColor[] = ['Highlight', 'Todo', 'Idea']
 const threadColorEnum = z.enum<ThreadColor, [ThreadColor, ...ThreadColor[]]>([
@@ -157,6 +158,7 @@ export const getJournalThreads = async (): Promise<ThreadData[]> => {
     .orderBy('updated_at', 'desc')
     .limit(30)
     .execute()
+  threads.forEach(processThread)
   return threads
 }
 
@@ -203,6 +205,7 @@ export const getTopicThreads = async (topic_id: number): Promise<ThreadData[]> =
     .orderBy('created_at', 'desc')
     .limit(30)
     .execute()
+  threads.forEach(processThread)
   return threads
 }
 
@@ -237,6 +240,7 @@ export const getThread = async (id: number): Promise<ThreadData> => {
     .where('t.id', '=', id)
     .where('user_id', '=', session.userId)
     .executeTakeFirstOrThrow()
+  processThread(thread)
   return thread
 }
 

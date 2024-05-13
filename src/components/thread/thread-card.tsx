@@ -17,7 +17,6 @@ import { ThreadContentSheet } from './thread-content-sheet'
 import { ThreadTopicSelect } from './thread-topic-select'
 import { ThreadUpdateForm } from './thread-update-form'
 import { parseThreadContent } from './util'
-import { ThreadTime } from './thread-time'
 
 export const ThreadCard = ({
   thread,
@@ -75,9 +74,7 @@ export const ThreadCard = ({
         onColorChange={handleColorChange}
         onTodoChange={handleTodoChange}
       />
-      {!isEditing && (
-        <ThreadTime date={thread.created_at} format={showDuration ? 'duration' : 'date'} />
-      )}
+      {!isEditing && <time>{showDuration ? thread.created_duration : thread.created_date}</time>}
       <div className="timeline-content">
         {isEditing ? (
           <ThreadUpdateForm thread={thread} onSuccess={handleSuccess} />

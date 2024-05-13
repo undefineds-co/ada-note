@@ -41,6 +41,11 @@ export type ThreadData = {
   extend: ThreadExtend
   created_at: Date
   updated_at: Date
+
+  created_date?: string
+  created_time?: string
+  created_duration?: string
+
   follows?: ThreadData[]
   num_follows?: number | null
   topic?: Pick<TopicData, 'id' | 'topic_name'> | null
