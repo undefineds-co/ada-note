@@ -279,12 +279,12 @@ export const updateTopic = async (id: number, formData: FormData) => {
   const { topic_content, pin } = zfd
     .formData({
       topic_content: zfd.text(z.string().optional()),
-      pin: zfd.checkbox().optional(),
+      pin: zfd.text(z.enum(['on', 'off']).optional()),
     })
     .parse(formData)
   const data: TopicUpdate = {}
   if (pin !== undefined) {
-    data.pin = pin
+    data.pin = pin === 'on'
   }
   if (topic_content) {
     const [topic_name, ...topic_desc_parts] = topic_content.split('\n')
