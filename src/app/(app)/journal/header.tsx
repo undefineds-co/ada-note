@@ -62,7 +62,7 @@ const DatePicker = (props: CalendarProps) => {
         <CalendarDays className="h-4 w-4" />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="end">
-        <Calendar className="mt-2" onDayClick={handleDayClick} {...otherProps} />
+        <Calendar className="mt-2" weekStartsOn={1} onDayClick={handleDayClick} {...otherProps} />
       </PopoverContent>
     </Popover>
   )
