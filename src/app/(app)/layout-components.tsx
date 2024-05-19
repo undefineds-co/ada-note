@@ -37,7 +37,7 @@ export const MainMenu = () => {
           key={item.href}
           href={item.href}
           className="main-menu-item"
-          data-active={path === item.href}
+          data-active={path.startsWith(item.href)}
         >
           <div className="main-menu-item-left">{<item.Icon className="w-5 h-5" />}</div>
           {item.label}

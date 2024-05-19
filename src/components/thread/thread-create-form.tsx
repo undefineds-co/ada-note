@@ -1,36 +1,24 @@
 'use client'
 
-import { startTransition, useRef } from 'react'
-import { createThread } from '~/actions'
+import { useRef, useTransition } from 'react'
 import { Button } from '~/components/ui/button'
 import { TextareaExtend } from '~/components/ui/textarea-extend'
 
 export const ThreadCreateForm = ({
-  topic_id,
-  lead_thread_id,
-  onSuccess,
+  onSubmit,
 }: {
-  topic_id?: number
-  lead_thread_id?: number
-  onSuccess?: () => void
+  onSubmit: (formData: FormData) => Promise<void>
 }) => {
   const formRef = useRef<HTMLFormElement>(null)
+  const [pending, startTransition] = useTransition()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    if (topic_id) {
-      formData.append('topic_id', topic_id.toString())
-    }
-    if (lead_thread_id) {
-      formData.append('lead_thread_id', lead_thread_id.toString())
-    }
-    formData.append('color', 'None')
     startTransition(async () => {
-      await createThread(formData)
+      await onSubmit(formData)
+      formRef.current?.reset()
     })
-    formRef.current?.reset()
-    onSuccess?.()
   }
 
   return (
@@ -39,12 +27,13 @@ export const ThreadCreateForm = ({
         name="thread_content"
         placeholder="What's on your mind?"
         className="bg-white"
+        disabled={pending}
         onSubmit={() => {
           formRef.current?.requestSubmit()
         }}
       />
       <div className="flex items-center justify-end">
-        <Button type="submit" className="rounded-full" size="sm">
+        <Button type="submit" className="rounded-full" size="sm" disabled={pending}>
           Post
         </Button>
       </div>

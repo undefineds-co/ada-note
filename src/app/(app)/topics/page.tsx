@@ -1,9 +1,8 @@
-import { TopicCreateForm } from '~/components/topic'
 import { TopicCardList } from '~/components/topic/topic-card-list'
-import { getTopics } from '~/actions'
+import { getTopicList } from '~/actions/topic'
 
 const Page = async () => {
-  const topics = await getTopics()
+  const topics = await getTopicList()
   return <TopicCardList topics={topics} />
 }
 

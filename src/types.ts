@@ -63,8 +63,8 @@ export interface TopicTable {
   id: Generated<number>
   topic_type_id?: number
   topic_name: string
-  topic_desc: string
-  builtin_topic_name: ColumnType<string | undefined, never, never>
+  topic_desc?: string
+  builtin_topic_name: ColumnType<string | undefined, string | undefined, never>
   is_private: boolean
   is_collaborate: boolean
   pin?: boolean

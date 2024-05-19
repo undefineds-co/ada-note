@@ -16,3 +16,9 @@ export const processThread = (thread: ThreadData) => {
   }
   return thread
 }
+
+export const dateBeginAndEnd = (date: string) => {
+  const today = dayjs(date)
+  const tomorrow = today.add(1, 'd')
+  return [today.toDate(), tomorrow.toDate()]
+}

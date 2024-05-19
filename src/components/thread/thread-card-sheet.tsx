@@ -2,12 +2,13 @@
 
 import { startTransition, useState } from 'react'
 import { getThread } from '~/actions'
+import { createFollowThread } from '~/actions/thread'
+import { ScrollArea } from '~/components/ui/scroll-area'
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet'
 import { Skeleton } from '~/components/ui/skeleton'
 import { ThreadData } from '~/types'
 import { ThreadCard } from './thread-card'
 import { ThreadCreateForm } from './thread-create-form'
-import { ScrollArea } from '~/components/ui/scroll-area'
 
 export const ThreadCardSheet = ({
   lead_thread_id,
@@ -22,6 +23,10 @@ export const ThreadCardSheet = ({
       const thread = await getThread(lead_thread_id)
       setThread(thread)
     })
+  }
+  const handleThreadCreate = async (formData: FormData) => {
+    await createFollowThread(lead_thread_id, formData)
+    fetchThread()
   }
   return (
     <Sheet onOpenChange={fetchThread}>
@@ -40,7 +45,7 @@ export const ThreadCardSheet = ({
           )}
         </ScrollArea>
         <div className="p-4 bg-gray-50 border-t">
-          <ThreadCreateForm lead_thread_id={lead_thread_id} onSuccess={fetchThread} />
+          <ThreadCreateForm onSubmit={handleThreadCreate} />
         </div>
       </SheetContent>
     </Sheet>
