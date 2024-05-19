@@ -24,9 +24,11 @@ export const Header = () => {
   const currentDate = dateParse(date, 'yyyyMMdd', new Date())
   return (
     <header className="header">
-      <div className="flex items-baseline gap-2 w-[220px]">
-        <h2 className="text-lg">{dateFormat(currentDate, 'MMM d, yyyy')}</h2>
-        <span className="text-red-500 text-sm">{dateFormat(currentDate, 'EEEE')}</span>
+      <div className="hidden md:block">
+        <div className="flex items-baseline gap-2 w-[220px]">
+          <h2 className="text-lg">{dateFormat(currentDate, 'MMM d, yyyy')}</h2>
+          <span className="text-red-500 text-sm">{dateFormat(currentDate, 'EEEE')}</span>
+        </div>
       </div>
 
       <div className="flex-1 flex items-center gap-4">
