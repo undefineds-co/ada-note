@@ -5,25 +5,25 @@ import { processThread } from './util'
 import { jsonArrayFrom, jsonObjectFrom } from 'kysely/helpers/postgres'
 
 export const TOPIC_SELECTS: SelectExpression<Database, 'topic'>[] = [
-  'id',
-  'topic_name',
-  'builtin_topic_name',
-  'topic_desc',
-  'pin',
-  'is_private',
-  'is_collaborate',
-  'created_at',
-  'updated_at',
+  'topic.id',
+  'topic.topic_name',
+  'topic.builtin_topic_name',
+  'topic.topic_desc',
+  'topic.pin',
+  'topic.is_private',
+  'topic.is_collaborate',
+  'topic.created_at',
+  'topic.updated_at',
 ]
 
 export const THREAD_SELECTS: SelectExpression<Database, 'thread'>[] = [
-  'id',
-  'lead_thread_id',
-  'thread_content',
-  'color',
-  'extend',
-  'created_at',
-  'updated_at',
+  'thread.id',
+  'thread.lead_thread_id',
+  'thread.thread_content',
+  'thread.color',
+  'thread.extend',
+  'thread.created_at',
+  'thread.updated_at',
 ]
 
 const THREAD_SELECTS_T: SelectExpression<Database & { t: ThreadTable }, 't'>[] = [
@@ -130,11 +130,12 @@ export const createThread = async (values: ThreadCreate): Promise<ThreadData | u
     .executeTakeFirst()
   return created
 }
-export const getThreadTopicId = async (threadId: number) => {
+export const getThreadTopic = async (threadId: number) => {
   const topic = await db
-    .selectFrom('thread')
-    .select('topic_id')
-    .where('id', '=', threadId)
+    .selectFrom('topic')
+    .innerJoin('thread', 'thread.topic_id', 'topic.id')
+    .select(TOPIC_SELECTS)
+    .where('thread.id', '=', threadId)
     .executeTakeFirst()
-  return topic?.topic_id
+  return topic
 }

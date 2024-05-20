@@ -168,6 +168,6 @@
     @apply text-sm font-semibold text-gray-900 dark:text-white;
   }
   .timeline pre {
-    @apply w-full line-clamp-2 text-sm font-normal text-gray-600 dark:text-gray-400 font-sans leading-6 break-all text-wrap whitespace-pre-wrap;
+    @apply w-full line-clamp-4 text-sm font-normal text-gray-600 dark:text-gray-400 font-sans leading-6 break-all text-wrap whitespace-pre-wrap;
   }
 }

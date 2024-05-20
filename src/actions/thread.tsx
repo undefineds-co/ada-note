@@ -2,7 +2,8 @@
 
 import * as zfd from '~/lib/zod-form-data'
 import { mustAuth } from './auth'
-import { createThread, getThreadTopicId } from './common'
+import { createThread, getThreadTopic } from './common'
+import { revalidatePath } from 'next/cache'
 
 export const createFollowThread = async (lead_thread_id: number, formData: FormData) => {
   const session = await mustAuth()
@@ -12,17 +13,24 @@ export const createFollowThread = async (lead_thread_id: number, formData: FormD
     })
     .parse(formData)
 
-  const topic_id = await getThreadTopicId(lead_thread_id)
-  if (!topic_id) {
+  const topic = await getThreadTopic(lead_thread_id)
+  if (!topic) {
     throw new Error('topic not found')
   }
 
-  return await createThread({
-    topic_id: topic_id,
+  await createThread({
+    topic_id: topic.id,
     lead_thread_id,
     thread_content: form.thread_content,
     color: 'None',
     updated_at: new Date(),
     user_id: session.userId,
   })
+
+  if (topic.builtin_topic_name?.startsWith('journal_')) {
+    const [, date] = topic.builtin_topic_name.split('_')
+    revalidatePath(`/journal/${date}`)
+  } else {
+    revalidatePath(`/topics/${topic.id}`)
+  }
 }
