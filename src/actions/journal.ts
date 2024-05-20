@@ -12,7 +12,7 @@ export const getJournalTopicAndThreads = async (date: string) => {
   const topic = await getTopicByBuiltInName(builtin_topic_name, session.userId)
   let threads: ThreadData[] = []
   if (topic) {
-    threads = await getTopicThreads(topic.id, session.userId)
+    threads = await getTopicThreads(topic.id)
   }
   return { topic, threads }
 }

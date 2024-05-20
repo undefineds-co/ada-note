@@ -1,10 +1,10 @@
 'use client'
 
 import { startTransition, useRef } from 'react'
-import { deleteThread, updateThread } from '~/actions'
 import { Button } from '~/components/ui/button'
 import { TextareaExtend } from '~/components/ui/textarea-extend'
 import { ThreadData } from '~/types'
+import { deleteThread, updateThread } from '../../actions/thread'
 
 export const ThreadUpdateForm = ({
   thread,
@@ -32,12 +32,17 @@ export const ThreadUpdateForm = ({
     onSuccess?.()
   }
 
+  let content = thread.thread_content
+  if (thread.group_name) {
+    content = `#${thread.group_name}#\n${content}`
+  }
+
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="stack">
       <TextareaExtend
         name="thread_content"
         className="border-none p-0"
-        defaultValue={thread.thread_content}
+        defaultValue={content}
         onSubmit={() => formRef.current?.requestSubmit()}
         onEsc={() => onClose?.()}
       />

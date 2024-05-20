@@ -29,7 +29,6 @@ export class WithUserPlugin implements KyselyPlugin {
 export class WithUserTransformer extends OperationNodeTransformer {
   protected override transformAnd(node: AndNode): AndNode {
     node = super.transformAnd(node)
-    console.log('node', JSON.stringify(node, null, 2))
 
     return {
       ...node,

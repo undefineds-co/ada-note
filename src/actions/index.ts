@@ -20,6 +20,7 @@ import {
 import { mustAuth } from './auth'
 import { signIn } from '../auth'
 import { processThread } from './util'
+import { THREAD_SELECTS, THREAD_SELECTS_FT, THREAD_SELECTS_T } from './common'
 
 const threadColors: ThreadColor[] = ['Highlight', 'Todo', 'Idea']
 const threadColorEnum = z.enum<ThreadColor, [ThreadColor, ...ThreadColor[]]>([
@@ -117,115 +118,16 @@ export const deleteThread = async (id: number) => {
   return deleteRes
 }
 
-export const getJournalThreads = async (): Promise<ThreadData[]> => {
-  const session = await mustAuth()
-  const threads = await db
-    .selectFrom('thread as t')
-    .select(['t.id', 't.thread_content', 't.color', 't.extend', 't.created_at', 't.updated_at'])
-    .select(eb =>
-      jsonObjectFrom(
-        eb.selectFrom('topic').select(['id', 'topic_name']).whereRef('t.topic_id', '=', 'topic.id')
-      ).as('topic')
-    )
-    .select(eb =>
-      jsonArrayFrom(
-        eb
-          .selectFrom('thread as ft')
-          .select([
-            'ft.id',
-            'ft.lead_thread_id',
-            'ft.thread_content',
-            'ft.color',
-            'ft.extend',
-            'ft.created_at',
-            'ft.updated_at',
-          ])
-          .whereRef('ft.lead_thread_id', '=', 't.id')
-          .orderBy('ft.created_at', 'asc')
-          .limit(2)
-      ).as('follows')
-    )
-    .select(eb =>
-      eb
-        .selectFrom('thread')
-        .select(eb.fn.count<number>('id').as('num_follows'))
-        .whereRef('lead_thread_id', '=', 't.id')
-        .as('num_follows')
-    )
-    .where('lead_thread_id', 'is', null)
-    .where('user_id', '=', session.userId)
-    .orderBy('top_on_journal', 'desc')
-    .orderBy('updated_at', 'desc')
-    .limit(30)
-    .execute()
-  threads.forEach(processThread)
-  return threads
-}
-
-export const getTopicThreads = async (topic_id: number): Promise<ThreadData[]> => {
-  const session = await mustAuth()
-  const threads = await db
-    .selectFrom('thread as t')
-    .select(['t.id', 't.thread_content', 't.color', 't.extend', 't.created_at', 't.updated_at'])
-    .select(eb =>
-      jsonObjectFrom(
-        eb.selectFrom('topic').select(['id', 'topic_name']).whereRef('t.topic_id', '=', 'topic.id')
-      ).as('topic')
-    )
-    .select(eb =>
-      jsonArrayFrom(
-        eb
-          .selectFrom('thread as ft')
-          .select([
-            'ft.id',
-            'ft.lead_thread_id',
-            'ft.thread_content',
-            'ft.thread_content',
-            'ft.color',
-            'ft.extend',
-            'ft.created_at',
-            'ft.updated_at',
-          ])
-          .whereRef('ft.lead_thread_id', '=', 't.id')
-          .orderBy('ft.created_at', 'asc')
-          .limit(2)
-      ).as('follows')
-    )
-    .select(eb =>
-      eb
-        .selectFrom('thread')
-        .select(eb.fn.count<number>('id').as('num_follows'))
-        .whereRef('lead_thread_id', '=', 't.id')
-        .as('num_follows')
-    )
-    .where('lead_thread_id', 'is', null)
-    .where('topic_id', '=', topic_id)
-    .where('user_id', '=', session.userId)
-    .orderBy('top_on_topic', 'desc')
-    .orderBy('created_at', 'desc')
-    .limit(30)
-    .execute()
-  threads.forEach(processThread)
-  return threads
-}
-
 export const getThread = async (id: number): Promise<ThreadData> => {
   const session = await mustAuth()
   const thread = await db
     .selectFrom('thread as t')
-    .select(['t.id', 't.thread_content', 't.color', 't.extend', 't.created_at', 't.updated_at'])
+    .select(THREAD_SELECTS_T)
     .select(eb =>
       jsonArrayFrom(
         eb
           .selectFrom('thread as ft')
-          .select([
-            'ft.id',
-            'ft.thread_content',
-            'ft.color',
-            'ft.extend',
-            'ft.created_at',
-            'ft.updated_at',
-          ])
+          .select(THREAD_SELECTS_FT)
           .whereRef('ft.lead_thread_id', '=', 't.id')
           .orderBy('ft.created_at', 'asc')
       ).as('follows')

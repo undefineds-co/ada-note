@@ -1,9 +1,21 @@
 'use server'
 
 import * as zfd from '~/lib/zod-form-data'
-import { mustAuth } from './auth'
-import { createThread, getUserTopics } from './common'
+import { checkOwner, mustAuth } from './auth'
+import {
+  createThread,
+  getUserTopics,
+  updateThread,
+  getTopicThreads as getTopicThreads_,
+} from './common'
 import { revalidatePath } from 'next/cache'
+import { parseThreadContent } from './util'
+import { ThreadUpdate } from '../types'
+
+export const getTopicThreads = async (topicId: number) => {
+  checkOwner('topic', topicId)
+  return getTopicThreads_(topicId)
+}
 
 export const createTopicThread = async (topicId: number, formData: FormData) => {
   const session = await mustAuth()
@@ -13,9 +25,14 @@ export const createTopicThread = async (topicId: number, formData: FormData) => 
     })
     .parse(formData)
 
+  const { thread_content, group_name } = parseThreadContent(form.thread_content)
+  if (!thread_content) {
+    throw new Error('thread content is required')
+  }
   await createThread({
     topic_id: topicId,
-    thread_content: form.thread_content,
+    thread_content,
+    group_name,
     color: 'None',
     updated_at: new Date(),
     user_id: session.userId,

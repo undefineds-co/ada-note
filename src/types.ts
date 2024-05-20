@@ -22,6 +22,7 @@ export interface ThreadTable {
   top_on_topic: NoSelectColumnType<boolean>
   order_on_topic: NoSelectColumnType<number>
   order_on_thread: NoSelectColumnType<number>
+  group_name?: string
   color: ThreadColor
   extend: JSONColumnType<ThreadExtend, ThreadExtend>
   created_at: ColumnType<Date, Date | undefined, never>
@@ -36,6 +37,7 @@ export type ThreadData = {
   id: number
   lead_thread_id?: number | null
   topic_id?: number | null
+  group_name?: string
   thread_content: string
   color: ThreadColor
   extend: ThreadExtend
