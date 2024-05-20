@@ -1,6 +1,15 @@
 import { startTransition, useEffect, useState } from 'react'
 
-export const useFetchAction = <T>(action: () => Promise<T>) => {
+type UseFetchActionOptions = {
+  refreshKey?: string
+}
+
+const globalRefreshes: Record<string, () => void> = {}
+
+export const useFetchAction = <T>(
+  action: () => Promise<T>,
+  options: UseFetchActionOptions = {}
+) => {
   const [data, setData] = useState<T>()
   const fetchData = () => {
     startTransition(async () => {
@@ -11,5 +20,16 @@ export const useFetchAction = <T>(action: () => Promise<T>) => {
   useEffect(() => {
     fetchData()
   }, [])
+
+  const { refreshKey } = options
+  if (refreshKey) {
+    globalRefreshes[refreshKey] = fetchData
+  }
   return { data, refetch: fetchData }
+}
+
+export const refreshAction = (refreshKey: string) => {
+  if (globalRefreshes[refreshKey]) {
+    globalRefreshes[refreshKey]()
+  }
 }

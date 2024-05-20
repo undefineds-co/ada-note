@@ -88,7 +88,9 @@ export const UserMenu = () => {
 
 export const PinTopics = () => {
   const path = usePathname()
-  const { data: topics } = useFetchAction<TopicData[]>(() => getPinTopics())
+  const { data: topics } = useFetchAction<TopicData[]>(getPinTopics, {
+    refreshKey: 'pin-topics',
+  })
   return (
     <nav className="main-menu">
       {topics?.map(t => (

@@ -1,18 +1,17 @@
 'use client'
 
+import { Pin as PinIcon, Settings as SettingsIcon } from 'lucide-react'
+import { MouseEvent, startTransition, useState } from 'react'
+import { updateTopic } from '~/actions'
+import { Button } from '~/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu'
-import { Button } from '~/components/ui/button'
-import { Pin as PinIcon, Settings as SettingsIcon } from 'lucide-react'
-import { TopicData } from '../../types'
-import { MouseEvent, startTransition, useState } from 'react'
-import { updateTopic } from '../../actions'
+import { refreshAction } from '~/lib/client-utils'
+import { TopicData } from '~/types'
 
 export const TopicSettings = ({ topic }: { topic: TopicData }) => {
   const [open, setOpen] = useState(false)
@@ -24,6 +23,7 @@ export const TopicSettings = ({ topic }: { topic: TopicData }) => {
       formData.append('pin', topic.pin ? 'off' : 'on')
       await updateTopic(topic.id, formData)
       setOpen(false)
+      refreshAction('pin-topics')
     })
   }
   return (
