@@ -1,17 +1,11 @@
 import { ThreadData } from '~/types'
-import { ThreadCardLead } from './thread-card-lead'
+import { ThreadCard } from './thread-card'
 
-export const ThreadCardList = ({
-  threads,
-  num_follows_show = 3,
-}: {
-  threads: ThreadData[]
-  num_follows_show?: number
-}) => {
+export const ThreadCardList = ({ threads }: { threads: ThreadData[] }) => {
   return (
     <div className="stack-xl">
       {threads.map(thread => (
-        <ThreadCardLead key={thread.id} thread={thread} num_follows_show={num_follows_show} />
+        <ThreadCard key={thread.id} thread={thread} />
       ))}
     </div>
   )

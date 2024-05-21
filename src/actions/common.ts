@@ -112,7 +112,7 @@ export const getTopicThreads = async (topicId: number) => {
           .select(THREAD_SELECTS_FT)
           .whereRef('ft.lead_thread_id', '=', 't.id')
           .orderBy('ft.created_at', 'asc')
-          .limit(5)
+          .limit(10)
       ).as('follows')
     )
     .select(eb =>

@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: PageParams }) {
   return (
     <>
       <CreateForm date={params.date} />
-      <ThreadCardList threads={threads} num_follows_show={0} />
+      <ThreadCardList threads={threads} />
     </>
   )
 }

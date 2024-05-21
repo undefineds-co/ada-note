@@ -8,10 +8,6 @@ export const parseThreadContent = (thread_content: string) => {
     title = thread_content.slice(0, index)
     content = thread_content.slice(index + 1)
   }
-  if (title.length > 30) {
-    content = thread_content
-    title = undefined
-  }
   return {
     thread_title: title,
     thread_content: content,

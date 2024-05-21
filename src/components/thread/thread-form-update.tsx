@@ -1,12 +1,12 @@
 'use client'
 
 import { startTransition, useRef } from 'react'
+import { deleteThread, updateThread } from '~/actions/thread'
 import { Button } from '~/components/ui/button'
 import { TextareaExtend } from '~/components/ui/textarea-extend'
 import { ThreadData } from '~/types'
-import { deleteThread, updateThread } from '../../actions/thread'
 
-export const ThreadUpdateForm = ({
+export const ThreadFormUpdate = ({
   thread,
   onSuccess,
   onClose,

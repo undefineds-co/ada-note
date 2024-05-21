@@ -150,24 +150,22 @@
     @apply relative dark:border-gray-700;
   }
   .timeline-item {
-    @apply relative pb-4 lg:ps-6 ps-4 border-s border-gray-200;
+    @apply relative pb-6 ps-4 border-s border-gray-200;
   }
-  .timeline-item:last-child {
-    @apply border-none;
+  .timeline-add {
+    @apply relative ps-4 border-gray-200 leading-none;
   }
+
   .timeline-dot {
-    @apply absolute w-6 h-6 flex items-center justify-center bg-gray-200 rounded-full mt-1 -start-3 border border-white dark:border-gray-900 dark:bg-gray-700;
+    @apply absolute w-4 h-4 flex items-center justify-center bg-gray-200 rounded-full -start-2 border border-white dark:border-gray-900 dark:bg-gray-700;
   }
-  .timeline time {
-    @apply absolute top-2 right-2 text-xs font-normal leading-none text-gray-400 dark:text-gray-500;
+  .timeline-header {
+    @apply flex gap-1 text-xs font-normal leading-none text-gray-400 dark:text-gray-500;
   }
   .timeline-content {
-    @apply pt-1.5;
-  }
-  .timeline h3 {
-    @apply text-sm font-semibold text-gray-900 dark:text-white;
+    @apply leading-none flex flex-col gap-1;
   }
   .timeline pre {
-    @apply w-full line-clamp-4 text-sm font-normal text-gray-600 dark:text-gray-400 font-sans leading-6 break-all text-wrap whitespace-pre-wrap;
+    @apply w-full text-sm font-normal text-gray-600 dark:text-gray-400 font-sans leading-5 break-all text-wrap whitespace-pre-wrap;
   }
 }
