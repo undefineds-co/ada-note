@@ -9,7 +9,7 @@ export const ThreadCardReply = ({ thread_id }: { thread_id: number }) => {
     setReplying(false)
   }
   if (isReplying) {
-    return <ThreadFormCreate onSubmit={handleReply} />
+    return <ThreadFormCreate onSubmit={handleReply} onCancel={() => setReplying(false)} />
   }
   return (
     <div
