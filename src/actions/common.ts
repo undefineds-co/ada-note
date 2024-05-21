@@ -96,7 +96,7 @@ export const getTopicByBuiltInName = async (name: string, userId: number) => {
   return topic
 }
 
-export const getTopicThreads = async (topicId: number, filter: { group?: string }) => {
+export const getTopicThreads = async (topicId: number, filter?: { group?: string }) => {
   const stmt = await db
     .selectFrom('thread as t')
     .select(THREAD_SELECTS_T)
@@ -128,7 +128,7 @@ export const getTopicThreads = async (topicId: number, filter: { group?: string 
     .orderBy('created_at', 'desc')
     .limit(100)
 
-  if (filter.group) {
+  if (filter?.group) {
     stmt.where('group_name', '=', filter.group)
   }
   const threads = await stmt.execute()
