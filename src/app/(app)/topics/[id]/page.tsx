@@ -1,6 +1,6 @@
 import { getTopicThreads } from '~/actions/topic'
 import { ThreadCardList } from '~/components/thread'
-import { ThreadGroupSelect } from '~/components/thread/thread_group_select'
+import { ThreadGroupSelect } from '~/components/thread'
 import { CreateForm } from './create-form'
 
 type PageParams = {
@@ -31,10 +31,7 @@ const Page = async ({
     <div className="sm:w-full md:w-[768px] mx-auto flex flex-col gap-4 lg:gap-6">
       <CreateForm topicId={topic_id} />
       <ThreadGroupSelect groups={Array.from(groupSet)} />
-      <ThreadCardList
-        threads={threads.filter(t => !g || t.group_name === g)}
-        num_follows_show={0}
-      />
+      <ThreadCardList threads={threads.filter(t => !g || t.group_name === g)} />
     </div>
   )
 }
