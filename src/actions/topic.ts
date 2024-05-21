@@ -2,19 +2,13 @@
 
 import * as zfd from '~/lib/zod-form-data'
 import { checkOwner, mustAuth } from './auth'
-import {
-  createThread,
-  getUserTopics,
-  updateThread,
-  getTopicThreads as getTopicThreads_,
-} from './common'
+import { createThread, getUserTopics, getTopicThreads as getTopicThreads_ } from './common'
 import { revalidatePath } from 'next/cache'
 import { parseThreadContent } from './util'
-import { ThreadUpdate } from '../types'
 
-export const getTopicThreads = async (topicId: number) => {
+export const getTopicThreads = async (topicId: number, filter: { group?: string }) => {
   checkOwner('topic', topicId)
-  return getTopicThreads_(topicId)
+  return getTopicThreads_(topicId, filter)
 }
 
 export const createTopicThread = async (topicId: number, formData: FormData) => {
