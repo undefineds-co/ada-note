@@ -97,7 +97,7 @@ export const getTopicByBuiltInName = async (name: string, userId: number) => {
 }
 
 export const getTopicThreads = async (topicId: number, filter?: { group?: string }) => {
-  const stmt = await db
+  const stmt = db
     .selectFrom('thread as t')
     .select(THREAD_SELECTS_T)
     .select(eb =>
