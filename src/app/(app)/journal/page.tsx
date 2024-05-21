@@ -1,7 +1,7 @@
-import dayjs from 'dayjs'
+import { formatDate } from 'date-fns'
 import { redirect } from 'next/navigation'
 
 export default function Page() {
-  const today = dayjs().format('YYYYMMDD')
+  const today = formatDate(new Date(), 'yyyyMMdd')
   redirect(`/journal/${today}`)
 }
