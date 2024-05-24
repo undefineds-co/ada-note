@@ -1,7 +1,7 @@
-import { formatDate } from 'date-fns'
-import { redirect } from 'next/navigation'
+import { RedirectType, redirect } from 'next/navigation'
+import { getJournalTodayDate } from '~/actions/journal'
 
-export default function Page() {
-  const today = formatDate(new Date(), 'yyyyMMdd')
-  redirect(`/journal/${today}`)
+export default async function Page() {
+  const date = await getJournalTodayDate()
+  redirect(`/journal/${date}`, RedirectType.replace)
 }

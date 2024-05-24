@@ -1,7 +1,9 @@
 'use client'
 
+import { formatDate } from 'date-fns'
 import { Check, CheckCircle } from 'lucide-react'
 import { MouseEvent, startTransition, useState } from 'react'
+import { deleteThread, updateThread } from '~/actions/thread'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +13,6 @@ import {
 } from '~/components/ui/dropdown-menu'
 import { cn } from '~/lib/utils'
 import { ThreadColor, ThreadData, ThreadExtend } from '~/types'
-import { updateThread } from '../../actions'
-import { formatDate } from 'date-fns'
 import { ThreadFormUpdate } from './thread-form-update'
 
 export const ThreadFollowItem = ({ thread }: { thread: ThreadData }) => {
@@ -34,6 +34,16 @@ export const ThreadFollowItem = ({ thread }: { thread: ThreadData }) => {
     })
   }
 
+  const handleUpdate = async (formData: FormData) => {
+    await updateThread(thread.id, formData)
+    setEditing(false)
+  }
+
+  const handleDelete = async () => {
+    await deleteThread(thread.id)
+    setEditing(false)
+  }
+
   return (
     <div className={cn('timeline-item')}>
       <ThreadDot
@@ -47,7 +57,12 @@ export const ThreadFollowItem = ({ thread }: { thread: ThreadData }) => {
           <time>{formatDate(thread.created_at, 'MM/dd HH:mm')}</time>
         </div>
         {isEditing ? (
-          <ThreadFormUpdate thread={thread} onSuccess={() => setEditing(false)} />
+          <ThreadFormUpdate
+            thread={thread}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+            onClose={() => setEditing(false)}
+          />
         ) : (
           <pre>{thread.thread_content}</pre>
         )}

@@ -1,6 +1,7 @@
+'use client'
+
 import { addDays, startOfWeek, format } from 'date-fns'
-import { Button } from '../../../components/ui/button'
-import { cn } from '../../../lib/utils'
+import { Button } from '~/components/ui/button'
 
 export const WeekdaySelect = ({
   selected,

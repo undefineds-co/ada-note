@@ -8,16 +8,32 @@ import { ThreadCardReply } from './thread-card-reply'
 import { ThreadFormUpdate } from './thread-form-update'
 import { parseThreadContent } from './util'
 import { ThreadFollowItem } from './thread-follow-item'
+import { deleteThread, updateThread } from '../../actions/thread'
 
 export const ThreadCard = ({ thread }: { thread: ThreadData }) => {
   const [isEditing, setEditing] = useState(false)
   const { thread_title, thread_content } = parseThreadContent(thread.thread_content)
 
+  const handleUpdate = async (formData: FormData) => {
+    await updateThread(thread.id, formData)
+    setEditing(false)
+  }
+
+  const handleDelete = async () => {
+    await deleteThread(thread.id)
+    setEditing(false)
+  }
+
   if (isEditing) {
     return (
       <Card>
         <div className="p-4">
-          <ThreadFormUpdate thread={thread} onSuccess={() => setEditing(false)} />
+          <ThreadFormUpdate
+            thread={thread}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+            onClose={() => setEditing(false)}
+          />
         </div>
       </Card>
     )

@@ -1,10 +1,12 @@
 'use server'
 
-import * as zfd from '~/lib/zod-form-data'
-import { mustAuth } from './auth'
-import { getTopicByBuiltInName, getTopicThreads, createTopic, createThread } from './common'
-import { ThreadData, TopicCreate } from '../types'
+import { formatDate } from 'date-fns'
 import { revalidatePath } from 'next/cache'
+import { RedirectType, redirect } from 'next/navigation'
+import * as zfd from '~/lib/zod-form-data'
+import { ThreadData, TopicCreate } from '../types'
+import { mustAuth } from './auth'
+import { createThread, createTopic, getTopicByBuiltInName, getTopicThreads } from './common'
 
 export const getJournalTopicAndThreads = async (date: string) => {
   const session = await mustAuth()
@@ -50,4 +52,10 @@ export const createJournalThread = async (date: string, formData: FormData) => {
   })
 
   revalidatePath(`/journal/${date}`)
+}
+
+export const getJournalTodayDate = async () => {
+  const today = new Date()
+  const date = formatDate(today, 'yyyyMMdd')
+  return date
 }

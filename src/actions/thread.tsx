@@ -2,7 +2,12 @@
 
 import * as zfd from '~/lib/zod-form-data'
 import { checkOwner, mustAuth } from './auth'
-import { createThread, getThreadTopic, updateThread as updateThread_ } from './common'
+import {
+  createThread,
+  getThreadTopic,
+  updateThread as updateThread_,
+  deleteThread as deleteThread_,
+} from './common'
 import { revalidatePath } from 'next/cache'
 import { ThreadUpdate } from '../types'
 import { parseThreadContent } from './util'
@@ -59,13 +64,6 @@ export const updateThread = async (id: number, formData: FormData) => {
 }
 
 export const deleteThread = async (id: number) => {
-  const session = await mustAuth()
-  const deleteRes = await db
-    .deleteFrom('thread')
-    .where('id', '=', id)
-    .where('user_id', '=', session.userId)
-    .returning('id')
-    .executeTakeFirstOrThrow()
-
-  return deleteRes
+  const thread = await checkOwner('thread', id)
+  return await deleteThread_(thread.id)
 }

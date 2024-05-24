@@ -153,6 +153,16 @@ export const updateThread = async (id: number, values: ThreadUpdate) => {
     .executeTakeFirst()
   return updated
 }
+
+export const deleteThread = async (id: number) => {
+  const deleteRes = await db
+    .deleteFrom('thread')
+    .where('id', '=', id)
+    .returning('id')
+    .executeTakeFirstOrThrow()
+  return deleteRes
+}
+
 export const getThreadTopic = async (threadId: number) => {
   const topic = await db
     .selectFrom('topic')
