@@ -9,6 +9,7 @@ import { ThreadFormUpdate } from './thread-form-update'
 import { parseThreadContent } from './util'
 import { ThreadFollowItem } from './thread-follow-item'
 import { deleteThread, updateThread } from '../../actions/thread'
+import ThreadTime from './thread-time'
 
 export const ThreadCard = ({ thread }: { thread: ThreadData }) => {
   const [isEditing, setEditing] = useState(false)
@@ -47,7 +48,7 @@ export const ThreadCard = ({ thread }: { thread: ThreadData }) => {
             {thread_title}
           </CardTitle>
           <div className="flex gap-1 text-xs text-gray-500">
-            <time>{formatDate(thread.created_at, 'yyyy/MM/dd')}</time>
+            <ThreadTime time={thread.created_at} format="yyyy/MM/dd" />
           </div>
         </div>
         <pre className="text-sm text-gray-600 dark:text-gray-400 font-sans leading-5 break-all text-wrap whitespace-pre-wrap;">

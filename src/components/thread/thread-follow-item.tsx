@@ -14,6 +14,7 @@ import {
 import { cn } from '~/lib/utils'
 import { ThreadColor, ThreadData, ThreadExtend } from '~/types'
 import { ThreadFormUpdate } from './thread-form-update'
+import ThreadTime from './thread-time'
 
 export const ThreadFollowItem = ({ thread }: { thread: ThreadData }) => {
   const [isEditing, setEditing] = useState(false)
@@ -54,7 +55,7 @@ export const ThreadFollowItem = ({ thread }: { thread: ThreadData }) => {
       />
       <div className="timeline-content" onDoubleClick={() => setEditing(true)}>
         <div className="timeline-header">
-          <time>{formatDate(thread.created_at, 'MM/dd HH:mm')}</time>
+          <ThreadTime time={thread.created_at} format="MM/dd HH:mm" />
         </div>
         {isEditing ? (
           <ThreadFormUpdate
