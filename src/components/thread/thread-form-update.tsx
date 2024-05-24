@@ -53,7 +53,10 @@ export const ThreadFormUpdate = ({
           className="rounded-full"
           variant="secondary"
           size="sm"
-          onClick={() => onClose?.()}
+          onClick={e => {
+            e.preventDefault()
+            onClose?.()
+          }}
           disabled={pending}
         >
           Cancel

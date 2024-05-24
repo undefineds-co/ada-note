@@ -39,7 +39,10 @@ export const ThreadFormCreate = ({
           <Button
             variant="ghost"
             size="sm"
-            onClick={onCancel}
+            onClick={e => {
+              e.preventDefault()
+              onCancel()
+            }}
             disabled={pending}
             className="rounded-full"
           >
